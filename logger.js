@@ -21,8 +21,7 @@
  * constructor printFunction argument, or by overwriting the this.printFunction
  * property. Default is true.
  * @arg {boolean} printFunction - Function to use to print the log to output;
- * used only if this.printToConsole is true. Default is console.log.
- * is true.
+ * used only if this.printToConsole is true. Default is console.log().
  *
  * @example SIMPLE EXAMPLE
  *  > log = new logger();
@@ -85,7 +84,7 @@ function logger( printToConsole, printFunction, writeToFile, logFilePath ) {
    * The print function is passed a string containing the log entry;
    * ti must append a newline character to the end of the string.
    */
-  this.printFunction = ( typeof printFunction === 'function' ) ? printFunction : console.log;
+  this.printFunction = ( typeof printFunction === 'function' ) ? printFunction : function( s ) { console.log( s ); };
 
   /**
    * Whether to write the log entries to file as they are added (TODO).
