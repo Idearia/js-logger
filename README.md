@@ -1,4 +1,4 @@
-# Javascript Logger
+# Javascript jsLogger
 
 Simple logger class to:
 
@@ -17,7 +17,7 @@ Log entries can be added with any of the following methods:
 For example, the following code
 
 ```javascript
-log = new logger();
+log = new jsLogger();
 log.info( "an informational message intended for the user, ex: program started" );
 log.debug( "a diagnostic message intended for the developer, ex: variable value = false" );
 log.warning( "a warning that something might go wrong, ex: variable not set, something bad might happen" );
@@ -36,7 +36,7 @@ $> 2018-05-01T10:06:07.051 [ERROR] : explain why the program is going to crash, 
 To write the same output to file, call the constructor with the third argument as `true` (TODO):
 
 ```javascript
-log = new logger( null, null, true );
+log = new jsLogger( null, null, true );
 ```
 
 ## Time tracking
@@ -44,7 +44,7 @@ log = new logger( null, null, true );
 You can log the time that it takes to execute a block of code by using the `time()` and `timeEnd()` methods. For example, the following code:
 
 ```javascript
-log = new logger();
+log = new jsLogger();
 log.time( "A small loop" );
 setTimeout( function() { log.timeEnd( "A small loop" ); }, 500 );
 log.time( "A big loop" );

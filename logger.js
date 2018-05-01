@@ -1,5 +1,5 @@
 /**
- * @class Simple logger class in javascript.
+ * @constructor Simple logger class in javascript.
  *
  * Simple class with methods & properties to:
  *   - Keep track of log entries.
@@ -24,7 +24,7 @@
  * used only if this.printToConsole is true. Default is console.log().
  *
  * @example SIMPLE EXAMPLE
- *  > log = new logger();
+ *  > log = new jsLogger();
  *  > log.info( "an informational message intended for the user, ex: program started" );
  *  > log.debug( "a diagnostic message intended for the developer, ex: variable value = false" );
  *  > log.warning( "a warning that something might go wrong, ex: variable not set, something bad might happen" );
@@ -36,14 +36,14 @@
  * 2018-05-01T10:06:07.051 [ERROR] : explain why the program is going to crash, ex: file not found, exiting
  *
  * @example TIME TRACKING
- *  > log = new logger();
+ *  > log = new jsLogger();
  *  > log.time( "A big loop" );
- *  > setTimeout( function() { log.timeEnd( "A big loop" ); }, 3000 );
+ *  > setTimeout( function() { log.timeEnd( "A big loop" ); }, 3000 ); // in Google Scripts use Utilities.sleep( 3000 )
  * will print to console the following lines, after 3 seconds:
  *   2018-05-01T10:11:52.616 [DEBUG] : 'A big loop' took 3 seconds
  *
  * @example USE CUSTOM PRINT FUNCTION
- *  > log = new logger();
+ *  > log = new jsLogger();
  *  > log.printFunction = function( s ) { console.log( "{My custom prefix} " + s + " {My custom suffix}" ); };
  *  > log.info( "Any log message" );
  * will print to console the following:
@@ -51,12 +51,12 @@
  *
  * @example WRITE TO FILE (TODO)
  * To write the log to file, call the log with the writeToFile argument set to true:
- *  > log = new logger( true );
+ *  > log = new jsLogger( true );
  * or set the writeToFile property explicitly:
- *  > log = new logger();
+ *  > log = new jsLogger();
  *  > log.writeToFile = true;
  */
-function logger( printToConsole, printFunction, writeToFile, logFilePath ) {
+var jsLogger = function( printToConsole, printFunction, writeToFile, logFilePath ) {
   
  /**
   * Incremental log, where each entry is an array with the following elements:
@@ -95,7 +95,7 @@ function logger( printToConsole, printFunction, writeToFile, logFilePath ) {
    * Full path of the file where the log will be written in real time (TODO);
    * default is <ISO timestamp>.log.
    */
-  this.logFilePath = ( typeof logFilePath !== 'undefined' ) ? logFilePath : logger.dateToString( new Date() ) + '.log';
+  this.logFilePath = ( typeof logFilePath !== 'undefined' ) ? logFilePath : jsLogger.dateToString( new Date() ) + '.log';
   
 }
 
@@ -107,7 +107,7 @@ function logger( printToConsole, printFunction, writeToFile, logFilePath ) {
 /**
  * Add a log entry with an informational message for the user.
  */
-logger.prototype.info = function( message ) {
+jsLogger.prototype.info = function( message ) {
   return this.add( message, 'info' );
 }
 
@@ -115,7 +115,7 @@ logger.prototype.info = function( message ) {
 /**
  * Add a log entry with a diagnostic message for the developer.
  */
-logger.prototype.debug = function( message ) {
+jsLogger.prototype.debug = function( message ) {
   return this.add( message, 'debug' );
 }
 
@@ -123,7 +123,7 @@ logger.prototype.debug = function( message ) {
 /**
  * Add a log entry with a warning message.
  */
-logger.prototype.warning = function( message ) {
+jsLogger.prototype.warning = function( message ) {
   return this.add( message, 'warning' );
 }
 
@@ -132,7 +132,7 @@ logger.prototype.warning = function( message ) {
  * Add a log entry with an error - usually followed by
  * script termination.
  */
-logger.prototype.error = function( message ) {
+jsLogger.prototype.error = function( message ) {
   return this.add( message, 'error' );
 }
 
@@ -143,7 +143,7 @@ logger.prototype.error = function( message ) {
  * Returns the start time or false if a time tracker with the same name
  * exists
  */
-logger.prototype.time = function( name ) {
+jsLogger.prototype.time = function( name ) {
 
     if ( ! this.timeTracking.hasOwnProperty( name ) ) {
         this.timeTracking[ name ] = Date.now();
@@ -162,7 +162,7 @@ logger.prototype.time = function( name ) {
  * Returns the total time elapsed for the given time-tracker, or false if the
  * time tracker is not found.
  */
-logger.prototype.timeEnd = function( name ) {
+jsLogger.prototype.timeEnd = function( name ) {
 
     if ( this.timeTracking.hasOwnProperty( name ) ) {
         var start = this.timeTracking[ name ];
@@ -186,7 +186,7 @@ logger.prototype.timeEnd = function( name ) {
  * warning and error.
  * @return {object} - The log entry in object form.
  */
-logger.prototype.add = function( message, level ) {
+jsLogger.prototype.add = function( message, level ) {
 
     level = ( typeof level !== 'undefined' ) ? level : "debug";
 
@@ -223,7 +223,7 @@ logger.prototype.add = function( message, level ) {
 /**
  * Take one log entry and return a one-line human-readable string.
  */
-logger.prototype.formatLogEntry = function( logEntry ) {
+jsLogger.prototype.formatLogEntry = function( logEntry ) {
 
     var logLine = "";
 
@@ -238,7 +238,7 @@ logger.prototype.formatLogEntry = function( logEntry ) {
         }
 
         /* Build a line of the pretty log */
-        logLine += logger.dateToString( logEntryCopy['timestamp'], true );
+        logLine += jsLogger.dateToString( logEntryCopy['timestamp'], true );
         logLine += " " + "[" + logEntryCopy['level'].toUpperCase() + "] : ";
         logLine += logEntryCopy['message'];
     
@@ -253,7 +253,7 @@ logger.prototype.formatLogEntry = function( logEntry ) {
  *
  * The method formatLogEntry() is used to format the log.
  */
-logger.prototype.dumpToString = function() {
+jsLogger.prototype.dumpToString = function() {
   
     var output = '';
 
@@ -277,7 +277,7 @@ logger.prototype.dumpToString = function() {
  * @param {string} filePath - Absolute path of the output file. If empty,
  * will use the class property logFilePath.
  */
-logger.prototype.dumpToFile = function( filePath ) {
+jsLogger.prototype.dumpToFile = function( filePath ) {
 
     filePath = ( typeof filePath !== 'undefined' ) ? filePath : this.logFilePath;
     
@@ -302,7 +302,7 @@ logger.prototype.dumpToFile = function( filePath ) {
  * UTC (false). Default is true.
  * @return {string} - An ISO 8601 date string, that is, YYYY-MM-DDTHH:mm:ss.sss.
  */
-logger.dateToString = function ( date, useCurrentTimezone ) {
+jsLogger.dateToString = function ( date, useCurrentTimezone ) {
     
     /* Parse arguments */
     date = ( typeof date !== 'undefined' ) ? date : new Date();
