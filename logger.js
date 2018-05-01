@@ -278,7 +278,7 @@ logger.prototype.dumpToString = function() {
  * @param {string} filePath - Absolute path of the output file. If empty,
  * will use the class property logFilePath.
  */
-logger.prototype.dumpToFile = function( filePath='' ) {
+logger.prototype.dumpToFile = function( filePath ) {
 
     filePath = ( typeof filePath !== 'undefined' ) ? filePath : this.logFilePath;
     
