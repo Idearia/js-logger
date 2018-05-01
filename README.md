@@ -53,7 +53,7 @@ setTimeout( function() { log.timeEnd( "A big loop" ); }, 3000 );
 
 will wait three seconds and a half, and print to console the following:
 
-```javascript
+```
 2018-05-01T10:34:08.022 [DEBUG] : 'A small loop' took 0.506 seconds
 2018-05-01T10:34:10.522 [DEBUG] : 'A big loop' took 3.006 seconds
 ```
